@@ -1,0 +1,87 @@
+<wsdl:definitions
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:sch="http://www.soap.mpangase.com/routeService"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.soap.mpangase.com/routeService"
+	targetNamespace="http://www.soap.mpangase.com/routeService">
+	<wsdl:types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://www.soap.mpangase.com/routeService">
+			<xs:element name="RouteRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="source" type="xs:string" />
+						<xs:element name="destination" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RouteResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="result" type="tns:Result" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="Result">
+				<xs:sequence>
+					<xs:element name="code" type="xs:int" />
+					<xs:element name="Message" type="xs:string" />
+					<xs:element name="path">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element maxOccurs="unbounded" minOccurs="0"
+									name="planet">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="name" type="xs:string" />
+											<xs:element name="distance" type="xs:double" />
+											<xs:element name="traffic" type="xs:double" />
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="RouteRequest">
+		<wsdl:part element="tns:RouteRequest" name="RouteRequest">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="RouteResponse">
+		<wsdl:part element="tns:RouteResponse" name="RouteResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="RouteServicePort">
+		<wsdl:operation name="Route">
+			<wsdl:input message="tns:RouteRequest" name="RouteRequest">
+			</wsdl:input>
+			<wsdl:output message="tns:RouteResponse"
+				name="RouteResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="RouteServicePortSoap11"
+		type="tns:RouteServicePort">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="Route">
+			<soap:operation soapAction="" />
+			<wsdl:input name="RouteRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="RouteResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="RouteServicePortService">
+		<wsdl:port binding="tns:RouteServicePortSoap11"
+			name="RouteServicePortSoap11">
+			<soap:address
+				location="http://localhost:8080/routefinder-soapservice/service/routeservice" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

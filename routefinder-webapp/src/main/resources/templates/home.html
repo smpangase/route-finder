@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<script src="webjars/jquery/3.6.0/jquery.min.js"></script>
+
+<script src="webjars/bootstrap/5.2.0/js/bootstrap.min.js"></script>
+<!-- Bootstrap CSS -->
+<link href="webjars/bootstrap/5.2.0/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="css/stylesheet.css" type="text/css" rel="stylesheet"
+	media="screen" />
+
+<title>Shortest Path Finder</title>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="/">Interstellar Transport System</a>
+		
+	</nav>
+
+	<br>
+	<div class="container-fluid text-center">
+		<div class="content">
+			<div class="container-fluid">
+				<div class="panel panel-default">
+					<div class="panel-heading"></div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md"></div>
+						</div>
+						<div class="row align-items-center">
+							<div class="col-md-10 offset-md-1">
+								<div class="card">
+									<div class="text-center card-header">
+										<b>Interstellar Transport System</b>
+									</div>
+									<form class="form-horizontal requires-validation" id="submit-form" novalidate>
+									<div class="card-body">
+										<h5 class="card-title"></h5>
+										<p class="card-text">
+										<div id="sandbox-container" class="">
+											<div class="row">
+												<div class="col col-sm-12 text-center">
+
+													<div id="result" class="alert alert-dismissible fade show hidden">
+														<div id="resultMessage"></div>
+													</div>
+
+												</div>
+											</div>
+											<div class="row">
+												<div class="col col-md-12">
+													<div class="form-group">
+														<label class="col col-sm-5 control-label" for="startDate">Source Planet</label>
+														<div class="col col-sm-7">
+															<select class="form-control" id="dropDownList">
+																<option value="Earth">Earth</option>
+															</select>
+														</div>
+													</div>
+													<div class="form-group required">
+														<label class="col col-sm-5 control-label"
+															for="productType">Destination Planet</label>
+														<div class="col col-sm-7">
+															<select class="form-select" id="destination" required>
+																<option value="" selected disabled>--Please Select--</option>
+																<option th:each="option : ${options}"
+																	th:value="${option.key}" th:text="${option.value}"></option>
+															</select>
+															<div class="invalid-feedback">
+														      Please select a valid destination Planet.
+														    </div>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col col-sm-5 control-label"
+															for="productType">Include Traffic Delay</label>
+														<div class="col col-sm-7">
+														<div class="form-check">
+														      <input type="checkbox" class="form-check-input" id="traffic" name="traffic" value="">
+														      <label class="form-check-label" for="check1"></label>
+														    </div>
+															
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col col-md-12">
+													<div class="pull-right">
+														<button type="submit" class="btn btn-primary"
+															id="submitReq">Submit</button>
+													</div>
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-lg">
+													<div id="payload"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div id="loading-indicator">
+							<img src="img/preloader.gif" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+    <footer class="page-footer font-small blue pt-4">
+        <div class="footer-copyright grid-rows text-center py-3">
+        	<div class="grid-row">
+        		<span class="links-text">Copyright © 2022,Mpangase.com (Pty) Ltd, All Rights Reserved</span>
+        	</div>
+        </div>
+    </footer>
+    </div>
+	<script>
+(function () {
+'use strict'
+const forms = document.querySelectorAll('.requires-validation')
+Array.from(forms)
+  .forEach(function (form) {
+    form.addEventListener('submit', function (event) {
+    if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+       
+    }
+  
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+	<script>
+	
+	$(document).ready(function () {
+		
+		$("#submit-form").submit(function (event) {
+			event.preventDefault();
+			if (!this.checkValidity()) {
+		          event.preventDefault();
+		          event.stopPropagation();
+		     } else {
+				var destination = $("#destination").val();
+				var traffic = $("#traffic")[0].checked;
+				
+			    $("#submitReq").prop("disabled", true);
+			
+			    $.ajax({
+			        type: "GET",
+			        contentType: "application/json",
+			        url: "api/v1/getroute/"+destination +"/traffic/"+traffic,
+			        dataType: 'json',
+			        cache: false,
+			        timeout: 600000,
+			        success: function (result) {		         	
+			         	if(result.resultCode !== 'success') {
+							$("#result").removeClass("hidden");
+							$("#result").addClass("alert-danger");
+							$("#resultMessage")
+							.html(result.resultMsg);
+						} else {
+							$("#result").removeClass("hidden alert-danger");
+							$("#result").addClass("alert-success");
+							$("#resultMessage").html(result.resultMsg);
+							
+							var payload = JSON.parse(result.payload);
+							//create a table of hops 
+							var html = '<table class="table table-striped">';
+							html += '<thead class="table-secondary"><tr><th></th><th>Planet</th><th>Distance(light years)</th>';
+							if(traffic)
+								html += '<th>Traffic(light years)</th>';
+							html += '</tr></thead>';
+							html += '<tbody>';
+							var hop;
+							for(var i = 0; i < payload.length; i++) {
+								hop = payload[i];
+								html += '<tr><td>'+(i+1)+'</td><td>'+hop.name+'</td><td>'+hop.distance+'</td>';
+								if(traffic)
+									html += '<td>'+hop.traffic+'</td>';
+								html += '</tr>';
+							}
+							html += '<tr class="table-secondary fw-bold"><td></td><td>Total</td><td>'+hop.distance+'</td>';
+							if(traffic)
+								html += '<td>'+hop.traffic+'</td>';
+							html += '</tr>';
+							html += '</tbody>';
+							html += '</table>';
+							
+							$('#payload').html(html);
+						}
+			
+			            $("#submitReq").prop("disabled", false);
+			
+			        },
+			        error: function (e) {
+		                $("#result").removeClass("hidden");
+						$("#result").addClass("alert-danger");
+						$("#resultMessage").html(e.responseText);
+			            $("#submitReq").prop("disabled", false);
+			        }
+			    });
+		     }
+		});
+	});
+	</script>
+</body>
+</html>

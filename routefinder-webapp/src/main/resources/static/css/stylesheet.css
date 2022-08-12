@@ -1,0 +1,143 @@
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: 'Open Sans', sans-serif;
+	color: #a59e9e;
+	text-rendering: optimizeLegibility;
+	font-size: 13px;
+}
+
+body {
+	
+	background-color: #d9dad885;
+}
+
+.container-fluid {
+	min-height: 100vh;
+}
+
+.card-header {
+	font-size: 20px;
+	background-color: rgba(0, 0, 0, 0.15);
+	color: #aa45b2;
+    font-weight: 900;
+}
+
+.btn-primary {
+    background-color: #aa45b2;
+    border-color: #aa45b2;
+}
+.row {
+	margin-top: 1%;
+}
+
+label {
+	display: inline-block;
+	max-width: 100%;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+
+.pull-right {
+	float: right !important;
+}
+
+.hidden {
+	display: none !important;
+}
+
+.form-group+.form-group {
+	border-top: 1px solid #ededed;
+}
+
+.form-group {
+	padding-top: 1%;
+	padding-bottom: 1%;
+	margin-bottom: 0;
+	position: relative;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-ms-flex-align: stretch;
+	align-items: stretch;
+	width: 100%;
+}
+
+div.required .control-label:not(span):before, td.required:before {
+	content: '* ';
+	color: #F00;
+	font-weight: bold;
+}
+
+.input-control:disabled, .input-control[readonly] {
+	background-color: #e9ecef;
+	opacity: 1;
+}
+
+.has-error .help-block, .has-error .control-label, .has-error .radio,
+	.has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline,
+	.has-error.radio label, .has-error.checkbox label, .has-error.radio-inline label,
+	.has-error.checkbox-inline label {
+	color: #e3503e;
+}
+
+.has-error .form-control {
+	border-color: #e3503e;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+.logo {
+	width: 50%;
+}
+
+#loading-indicator {
+	display: none;
+	position: fixed;
+	top: 45%;
+	left: 30%;
+	text-align: center;
+	padding: 10px;
+	font: normal 16px Tahoma, Geneva, sans-serif;
+	margin-left: -50px;
+	margin-top: -50px;
+	z-index: 2;
+	overflow: auto;
+	height: 50%;
+	width: 50%;
+}
+
+footer {
+    clear: both;
+    margin-top: auto;
+    z-index: 1;
+    /*position: fixed;*/
+    bottom: 0px;
+    width: 100%;
+}
+
+footer>div {
+    background: rgba(35, 35, 35, 1);
+}
+
+.grid-rows {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+footer .grid-row-2 {
+    background: rgba(48, 56, 65, 1);
+    padding: 8px;
+}
+.grid-row {
+    position: relative;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://www.soap.mpangase.com/routeService"
+	targetNamespace="http://www.soap.mpangase.com/routeService">
+	<xs:element name="RouteRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="source" type="xs:string" />
+				<xs:element name="destination" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="RouteResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="result" type="tns:Result" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="Result">
+		<xs:sequence>
+			<xs:element name="code" type="xs:int" />
+			<xs:element name="Message" type="xs:string" />
+			<xs:element name="path">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="planet" minOccurs="0" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="name" type="xs:string" />
+								<xs:element name="distance" type="xs:double" />
+								<xs:element name="traffic" type="xs:double" />
+							</xs:sequence>
+						</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
