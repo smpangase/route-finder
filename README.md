@@ -1,16 +1,17 @@
-## Shortest Route Finder
+# Shortest Route Finder
 
-This module contains three sub-projects.
+This project has the implementation of the shortest path finder, displays the results in a web app in a tabular form.
+This project contains three sub-projects.
 
-### Project Structure:
+## Project Structure:
 
 - RouteFinder Restful Web Service Subproject
 - RouteFinder SOAP Web Service Subproject
 - RouteFinder WebApp Subproject
 
-# Building and running the application
+## Building and running the application
 Follow these steps to have the application up and running
-## Requirements
+### Requirements
 	* maven 
 	* java 
 	* apache tomcat application server
@@ -27,7 +28,7 @@ cp routefinder-soapservice/target/routefinder-soapservice.war <tomcat-server>/we
 cp routefinder-webapp/target/routefinder-webapp.war <tomcat-server>/webapps
 ```
 
-## Testing 
+### Testing 
 
 After deploying the Run the web app from http://localhost:8080/routefinder-webapp
 
